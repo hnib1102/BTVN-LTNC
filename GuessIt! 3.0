@@ -1,0 +1,160 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <bits/stdc++.h>
+using namespace std;
+
+void introduction(){
+    cout << "Introduction (MUST READ):\nThe computer will give you a random number, and your task is to guess that number. You will also have a certain number of points, each time you guess wrong, one point will be deducted. The larger your remaining points, the higher your rank will be, and of course when the points return to 0, you will lose immediately (you're just a chicken bro!). The game will have 3 difficulties for you to challenge yourself. Anyway, good luck and wish you a relaxing experience!\n";
+}
+
+char difficulties(){
+    cout << "\nSelect your Difficulty (n/h/c):\n   - NORMAL(n): Guess between 1 and 50\n   - HARD(h): Guess between 1 and 125\n   - CHALLENGER(c): Guess between 1 and 250\n\nYour choice: ";
+    char answer;
+    cin >> answer;
+    return answer;
+}
+
+int generateRandomNumber(char Difficulty){
+    srand(time(0));
+
+    int randomNumber = 0;
+
+    if (Difficulty == 'n'){
+        randomNumber = (rand() % 50) + 1;
+    }
+
+    if (Difficulty == 'h'){
+        randomNumber = (rand() % 125) + 1;
+    }
+
+    if (Difficulty == 'c'){
+        randomNumber = (rand() % 250) + 1;
+    }
+    return randomNumber;
+}
+
+int getPlayerGuess(){
+    int number;
+    cout << endl << "Enter your number: ";
+    cin >> number;
+
+    return number;
+}
+
+void printAnswer(int randomNumber, int number, int &turn){
+    if (randomNumber > number) {
+        cout << "Your number is too small!" << endl;
+        turn ++;
+        cout << "Your score is: " << 20 - turn << endl;
+    }
+
+    else if (randomNumber < number) {
+        cout << "Your number is too big!" << endl;
+        turn ++;
+        cout << "Your score is: " << 20 - turn << endl;
+    }
+
+    else {
+        cout << "\nCongratulation!" << endl;
+        cout << "Your final score is: " << 20 - turn << endl;
+        if (turn > 4 && turn <= 9) cout << "Your rank is: A -- GOOD JOB!!!" << endl;
+        else if (turn > 9 && turn <= 14) cout << "Your rank is: B -- KEEP TRYING!!" << endl;
+        else if (turn > 14) cout << "Your rank is: C -- CHICKEN!" << endl;
+        else cout << "Your rank is: S -- UNBELIEVABLE!!!!" << endl;
+    }
+}
+void hint(int randomNumber, int &turn, char Difficulty){
+
+    if (Difficulty == 'n' && turn == 11){
+        cout << "\nWould you like to get a hint? Your points will be deducted by 2 afterwards! (y/n)\nYour answer: ";
+        char answer; cin >> answer;
+
+        if(answer == 'y'){
+            cout << "The tens digit is: " << (randomNumber/10)%10 << endl;
+            turn += 2;
+        }
+
+        else{
+            cout << "Okay, good luck!" << endl;
+        }
+    }
+
+    if (Difficulty == 'h' && turn == 10){
+        cout << "\nWould you like to get a hint? Your points will be deducted by 2 afterwards! (y/n)\nYour answer: ";
+        char answer; cin >> answer;
+
+        if(answer == 'y'){
+            cout << "The tens digit is: " << (randomNumber/10)%10 << endl;
+            turn += 2;
+        }
+
+        else{
+            cout << "Okay, good luck!" << endl;
+        }
+    }
+
+    if (Difficulty == 'c' && turn == 9){
+        cout << "\nWould you like to get a hint? Your points will be deducted by 2 afterwards! (y/n)\nYour answer: ";
+        char answer; cin >> answer;
+
+        if(answer == 'y'){
+            cout << "The tens digit is: " << (randomNumber/10)%10 << endl;
+            turn += 2;
+        }
+
+        else{
+            cout << "Okay, good luck!" << endl;
+        }
+    }
+
+}
+
+void PlayGuessIt(){
+    char Difficulty = difficulties();
+    int randomNumber = generateRandomNumber(Difficulty);
+    int number;
+    int score = 20, turn = 0;
+
+    do{
+        if (randomNumber == 0){
+            cout << "INVALID!\n";
+            break;
+        }
+        number = getPlayerGuess();
+        printAnswer(randomNumber, number, turn);
+        hint(randomNumber, turn, Difficulty);
+
+        if (turn == 20){
+            cout << endl << "Idiot!" << endl;
+            cout << "Your rank is: F -- THE FOOL" << endl;
+            break;
+        }
+        
+    } while (number != randomNumber);
+
+}
+
+bool playAgain(){
+    cout << endl << "Do you want to play again? (y/n)\nYour answer: ";
+    char answer;
+    cin >> answer;
+
+    if (answer == 'y') return true;
+    return false;
+}
+
+int main()
+{
+    introduction();
+    do{
+        PlayGuessIt();
+    } while (playAgain());
+
+    cout << "\nTHANKS FOR PLAYING! WISHING YOU A GREAT DAY!!!\n>.< A first game by Nong >.<\n";
+    cout << "\nPress any key to exit!";
+
+    char exit; cin >> exit;
+    return 0;
+}
